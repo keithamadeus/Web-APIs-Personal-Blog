@@ -13,6 +13,10 @@
 //     }
 // });
 
+// Need to add local stroage to make the dark mode change. 
+// if statment, remove body.classList else, then add - light mode
+// add event listener when the button is clicked
+
 const body = document.body;
 const modeToggle = document.getElementById('toggle');
 const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -26,3 +30,13 @@ modeToggle.addEventListener('click', () => {
     const isDark = body.classList.contains('dark-mode');
     localStorage.setItem('darkMode', isDark);
 });
+
+function validateForm() {
+    let x = document.forms["myForm"]["fname"].value;
+    if (x == "") {
+        alert("Please, fill out every section of the form."); {
+            // alert("Name must be filled out");
+            return false;
+        }
+    }
+}
