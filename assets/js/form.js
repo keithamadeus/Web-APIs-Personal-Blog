@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Check for missing data
       if (Object.values(formDataObject).some(value => value === '')) {
-        alert('Please fill in all fields');
+        alert('Please complete the form.');
         return;
       }
       

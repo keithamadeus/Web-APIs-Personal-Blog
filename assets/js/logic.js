@@ -22,6 +22,8 @@ function toggleMode() {
 function initializeMode() {
     // Get the current mode from local storage
     const currentMode = localStorage.getItem('mode');
+    const body = document.body;
+    body.classList.toggle('dark-mode');
 
     // Check if the current mode is 'dark'
     if (currentMode === 'dark') {
