@@ -1,42 +1,48 @@
-// TODO: Create logic to toggle the light/dark mode styles for the page and circle. The mode should be saved to local storage.
-// const toggleButton = document.getElementById('toggle');
-// const mainElement = document.querySelector('main');
-// // TODO: Create functions to read and write from local storage
-// toggleButton.addEventListener('click', () => {
-//     // get current mode
-//     const currentMode = window.getComputedStyle(mainElement).getPropertyValue('--mode');
-//     // switch to opposite mode
-//     if (currentMode === 'light') {
-//         mainElement.style.setProperty('--mode', 'dark');
-//     } else {
-//         mainElement.style.setProperty('--mode', 'light');
-//     }
-// });
+// TODO: Create logic to toggle the light/dark mode styles for the page and circle.
+// The mode should be saved to local storage.
 
-// Need to add local stroage to make the dark mode change. 
-// if statment, remove body.classList else, then add - light mode
-// add event listener when the button is clicked
+// Function to toggle the light/dark mode
+function toggleMode() {
+    // Get the current mode from local storage
+    const currentMode = localStorage.getItem('mode');
 
-const body = document.body;
-const modeToggle = document.getElementById('toggle');
-const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-if (isDarkMode) {
-    body.classList.add('dark-mode');
+    // Check if the current mode is 'dark'
+    if (currentMode === 'dark') {
+        // If it is 'dark', switch to 'light'
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('mode', 'light');
+    } else {
+        // If it is 'light', switch to 'dark'
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('mode', 'dark');
+    }
 }
 
-modeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    const isDark = body.classList.contains('dark-mode');
-    localStorage.setItem('darkMode', isDark);
-});
+// Function to initialize the mode based on the value in local storage
+function initializeMode() {
+    // Get the current mode from local storage
+    const currentMode = localStorage.getItem('mode');
 
-function validateForm() {
-    let x = document.forms["myForm"]["fname"].value;
-    if (x == "") {
-        alert("Please, fill out every section of the form."); {
-            // alert("Name must be filled out");
-            return false;
-        }
+    // Check if the current mode is 'dark'
+    if (currentMode === 'dark') {
+        // If it is 'dark', apply the 'dark-mode' class to the body
+        document.body.classList.add('dark-mode');
     }
+}
+
+// Call the initializeMode function to set the initial mode
+initializeMode();
+
+// Add event listener to toggle the mode when the button is clicked
+document.getElementById('toggle').addEventListener('click', toggleMode);
+
+// TODO: Create functions to read and write from local storage
+// Function to read from local storage
+function readFromLocalStorage(key) {
+    return localStorage.getItem(key);
+}
+
+// Function to write to local storage
+function writeToLocalStorage(key, value) {
+    localStorage.setItem(key, value);
 }

@@ -10,37 +10,38 @@
   <link rel="stylesheet" href="./assets/css/styles.css" />
   <link rel="stylesheet" href="./assets/css/blog.css" />
 
-  <script defer src="./assets/js/logic.js" type="text/javascript"></script>
-  <script defer src="./assets/js/blog.js" type="text/javascript"></script>
 </head>
 
 <body>
-  <main>
-    <article>
-      <h2>Title of the Article</h2>
-      <blockquote>
-        A quote from the article
-      </blockquote>
-      <p>Posted by Author on Date</p>
-    </article>
-    <article>
-      <h2>Another Article Title</h2>
-      <blockquote>
-        Another quote from the article
-      </blockquote>
-      <p>Posted by Author on Date</p>
-    </article>
-    <!-- Add more articles as needed -->
+  <header>
+    <button id="toggle" type="button" onclick="initializeMode()">Toggle</button>
+  </header>
+  <main id="blog-posts">
   </main>
   <footer>
-    <ul>
-      <li><a href="#">Link 1</a></li>
-      <li><a href="#">Link 2</a></li>
-      <li><a href="#">Link 3</a></li>
-    </ul>
   </footer>
   <button id="back">Back to Top</button>
   <div id="love">Made with ❤️</div>
+  <script defer src="./assets/js/logic.js" type="text/javascript"></script>
+  <script defer src="./assets/js/blog.js" type="text/javascript"></script>
+  <script defer src="./assets/js/form.js" type="text/javascript"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const blogPostsContainer = document.getElementById('blog-posts');
+      const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+      blogPosts.forEach(post => {
+        const article = document.createElement('article');
+        article.innerHTML = `
+          <h2>${post.title}</h2>
+          <blockquote>${post.quote}</blockquote>
+          <p>${post.content}</p>
+          <p><em>${post.author} - ${post.date}</em></p>
+        `;
+        blogPostsContainer.appendChild(article);
+      });
+    });
+  </script>
 </body>
 
 </html>
