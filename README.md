@@ -1,10 +1,22 @@
-added html element
+# Personal Blog
 
-added logic for toggle, and it isn't working
-    it is showing up in the console, but is ins't changing colors on the screen
+## Overview
+This project is designed to create a simple personal blog where users can post, view, and manage their blog entries. It involves dynamic content management using JavaScript, DOM manipulation, and local storage for data persistence. 
 
-Used Xpert learning assistant to fix logic, will try different arguments. 
+## User Story
+**As a marketing student**,  
+**I want a personal blog**  
+**So that I can showcase my thoughts and experiences.**
 
-added blog and form logic
+## Technologies Used
+- **HTML**: For structuring the web pages.
+- **CSS**: For styling the blog interface including light/dark mode.
+- **JavaScript**: For handling form submissions, DOM manipulation, and local storage operations.
 
-Returning to assignment to get finish. 
+## Installation
+No installation is required as this is a client-side application. Simply clone the repository and open `index.html` in your web browser.
+
+```bash
+git clone https://github.com/keithamadeus/Web-APIs-Personal-Blog
+cd index.html
+```
