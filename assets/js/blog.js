@@ -1,36 +1,63 @@
-// Create a variable that selects the main element
-const mainElement = document.querySelector('main');
-
-// Create a function that builds an element and appends it to the DOM
-function createAndAppendElement(tag, content, parent) {
+// Function to build and append an element
+function buildAndAppendElement(tag, attributes, textContent, parentElement) {
     const element = document.createElement(tag);
-    element.textContent = content;
-    parent.appendChild(element);
+    for (const key in attributes) {
+        element.setAttribute(key, attributes[key]);
+    }
+    element.textContent = textContent;
+    parentElement.appendChild(element);
 }
 
-// Create a function that handles the case where there are no blog posts to display
-function handleNoPosts() {
-    createAndAppendElement('p', 'No blog posts available.', mainElement);
+// Function to handle the case where there are no blog posts to display
+function handleNoBlogPosts() {
+    const message = "No blog posts to display.";
+    const errorMessage = document.createElement("p");
+    errorMessage.textContent = message;
+    mainElement.appendChild(errorMessage);
 }
 
-// Create a function that reads from local storage and returns the data
-function getPostsFromLocalStorage() {
-    const posts = localStorage.getItem('blogPosts');
-    return posts ? JSON.parse(posts) : [];
+// Function to read from local storage and return the data
+function readFromLocalStorage() {
+    const data = localStorage.getItem('blogPosts');
+    return JSON.parse(data);
 }
 
 // Call the function to render the list of blog posts
-function renderPosts() {
-    const posts = getPostsFromLocalStorage();
-    if (posts.length === 0) {
-        handleNoPosts();
-    } else {
-        posts.forEach(post => {
-            createAndAppendElement('h2', post.title, mainElement);
-            createAndAppendElement('p', post.content, mainElement);
-        });
-    }
+const mainElement = document.getElementById('blog-posts');
+const blogPosts = readFromLocalStorage();
+if (blogPosts && blogPosts.length > 0) {
+    blogPosts.forEach((post) => {
+        buildAndAppendElement('div', { class: 'blog-post' }, post.title, mainElement);
+        buildAndAppendElement('p', { class: 'blog-post-content' }, post.content, mainElement);
+        buildAndAppendElement('p', { class: 'blog-post-username' }, post.username, mainElement);
+    });
+} else {
+    handleNoBlogPosts();
 }
 
-// Initial call to render the list of blog posts
-renderPosts();
+document.addEventListener('DOMContentLoaded', function() {
+    const blogPostsContainer = document.getElementById('blog-posts');
+    const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+    blogPosts.forEach(post => {
+      const article = document.createElement('article');
+      article.innerHTML = `
+        <h2>${post.title}</h2>
+        <blockquote>${post.quote}</blockquote>
+        <p>${post.content}</p>
+        <br/>
+        <p><em>${post.username}</em></p>
+      `;
+      blogPostsContainer.appendChild(article);
+    });
+
+    // Add event listener for back button
+    const backButton = document.getElementById('back-to-index');
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    } else {
+        console.error('Back button not found');
+    }
+});
