@@ -6,3 +6,5 @@ added logic for toggle, and it isn't working
 Used Xpert learning assistant to fix logic, will try different arguments. 
 
 added blog and form logic
+
+Returning to assignment to get finish. 
