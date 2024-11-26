@@ -1,56 +1,63 @@
-// Select main element and back button
-let mainElement = document.querySelector('main');
-const backButton = document.querySelector('.back-button');
-
-// Function to create and append elements to the DOM
-function createElement(tag, className, textContent, parent) {
+// Function to build and append an element
+function buildAndAppendElement(tag, attributes, textContent, parentElement) {
     const element = document.createElement(tag);
-    if (className) element.className = className;
-    if (textContent) element.textContent = textContent;
-    if (parent) parent.appendChild(element);
-    return element;
-}
-
-// Display message when no blog posts exist
-function displayNoPosts() {
-    const noPosts = createElement('div', 'no-posts', null, mainElement);
-    createElement('h2', null, 'No Blog Posts Yet', noPosts);
-    createElement('p', null, 'Be the first to create a blog post!', noPosts);
-    const createPostLink = createElement('a', 'create-post-link', 'Create a Post', noPosts);
-    createPostLink.href = './index.html';
-}
-
-// Render blog posts list
-function renderBlogList() {
-    if (!mainElement) {
-        console.error('Main element not found');
-        return;
+    for (const key in attributes) {
+        element.setAttribute(key, attributes[key]);
     }
-
-    mainElement.innerHTML = '';
-
-    const blogPosts = JSON.parse(localStorage.getItem('blogData')) || [];
-    blogPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    if (blogPosts.length === 0) {
-        displayNoPosts();
-    } else {
-        blogPosts.forEach(post => {
-            const article = createElement('article', 'blog-post', null, mainElement);
-            createElement('h2', 'post-title', post.title, article);
-            createElement('p', 'post-content', post.content, article);
-            createElement('p', 'post-meta', `Posted by: ${post.userName} on ${new Date(post.date).toLocaleString()}`, article);
-        });
-    }
+    element.textContent = textContent;
+    parentElement.appendChild(element);
 }
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', renderBlogList);
+// Function to handle the case where there are no blog posts to display
+function handleNoBlogPosts() {
+    const message = "No blog posts to display.";
+    const errorMessage = document.createElement("p");
+    errorMessage.textContent = message;
+    mainElement.appendChild(errorMessage);
+}
 
-if (backButton) {
-    backButton.addEventListener('click', () => {
-        window.location.href = './index.html';
+// Function to read from local storage and return the data
+function readFromLocalStorage() {
+    const data = localStorage.getItem('blogPosts');
+    return JSON.parse(data);
+}
+
+// Call the function to render the list of blog posts
+const mainElement = document.getElementById('blog-posts');
+const blogPosts = readFromLocalStorage();
+if (blogPosts && blogPosts.length > 0) {
+    blogPosts.forEach((post) => {
+        buildAndAppendElement('div', { class: 'blog-post' }, post.title, mainElement);
+        buildAndAppendElement('p', { class: 'blog-post-content' }, post.content, mainElement);
+        buildAndAppendElement('p', { class: 'blog-post-username' }, post.username, mainElement);
     });
 } else {
-    console.error('Back button not found');
+    handleNoBlogPosts();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const blogPostsContainer = document.getElementById('blog-posts');
+    const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+    blogPosts.forEach(post => {
+      const article = document.createElement('article');
+      article.innerHTML = `
+        <h2>${post.title}</h2>
+        <blockquote>${post.quote}</blockquote>
+        <p>${post.content}</p>
+        <br/>
+        <p><em>${post.username}</em></p>
+      `;
+      blogPostsContainer.appendChild(article);
+    });
+
+    // Add event listener for back button
+    const backButton = document.getElementById('back-to-index');
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    } else {
+        console.error('Back button not found');
+    }
+});

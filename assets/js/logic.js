@@ -1,64 +1,50 @@
-// Select toggle and body elements
-const toggle = document.getElementById('toggle');
-const body = document.body;
+// TODO: Create logic to toggle the light/dark mode styles for the page and circle.
+// The mode should be saved to local storage.
 
-// Function to toggle dark/light mode
+// Function to toggle the light/dark mode
 function toggleMode() {
-    const img = document.querySelector('.toggle-button img');
-    const currentMode = img.getAttribute('data-state');
-    const newMode = currentMode === 'light' ? 'dark' : 'light';
+    // Get the current mode from local storage
+    const currentMode = localStorage.getItem('mode');
 
-    applyMode(newMode);
-    localStorage.setItem('mode', newMode);
-    img.setAttribute('data-state', newMode);
-    img.src = newMode === 'light' ? './assets/images/sun_icon.png' : './assets/images/moon_icon.png';
-}
-
-// Function to apply mode styles
-function applyMode(mode) {
-    body.classList.toggle('dark-mode', mode === 'dark');
-    body.classList.toggle('light-mode', mode === 'light');
-}
-
-// Read data from local storage
-function readLocalStorage(key) {
-    return JSON.parse(localStorage.getItem(key)) || [];
-}
-
-// Store data in local storage
-function storeLocalStorage(key, newData) {
-    const data = readLocalStorage(key);
-    data.push(newData);
-    localStorage.setItem(key, JSON.stringify(data));
-}
-
-// Event listener for toggle button
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.querySelector('.toggle-button');
-    
-    if (toggleButton) {
-        toggleButton.addEventListener('click', toggleMode);
-
-        const savedMode = localStorage.getItem('mode') || 'light';
-        applyMode(savedMode);
-        const img = toggleButton.querySelector('img');
-        img.setAttribute('data-state', savedMode);
-        img.src = savedMode === 'light' ? './assets/images/sun_icon.png' : './assets/images/moon_icon.png';
+    // Check if the current mode is 'dark'
+    if (currentMode === 'dark') {
+        // If it is 'dark', switch to 'light'
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('mode', 'light');
     } else {
-        console.error('No toggle button found');
+        // If it is 'light', switch to 'dark'
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('mode', 'dark');
     }
-});
+}
 
-// Log data from local storage
-console.log('data', readLocalStorage('blogData'));
+// Function to initialize the mode based on the value in local storage
+function initializeMode() {
+    // Get the current mode from local storage
+    const currentMode = localStorage.getItem('mode');
+    const body = document.body;
+    body.classList.toggle('dark-mode');
 
-// Redirect functions
-const redirectIndex = url => location.assign(url);
-const redirectBlog = url => {
-    location.assign(url);
-    console.log('redirecting to blog');
-};
+    // Check if the current mode is 'dark'
+    if (currentMode === 'dark') {
+        // If it is 'dark', apply the 'dark-mode' class to the body
+        document.body.classList.add('dark-mode');
+    }
+}
 
-// Example redirect URLs
-let redirectURL = './index.html';
-let redirectBlogURL = './blog.html';
+// Call the initializeMode function to set the initial mode
+initializeMode();
+
+// Add event listener to toggle the mode when the button is clicked
+document.getElementById('toggle').addEventListener('click', toggleMode);
+
+// TODO: Create functions to read and write from local storage
+// Function to read from local storage
+function readFromLocalStorage(key) {
+    return localStorage.getItem(key);
+}
+
+// Function to write to local storage
+function writeToLocalStorage(key, value) {
+    localStorage.setItem(key, value);
+}
